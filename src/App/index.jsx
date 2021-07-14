@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from '@emotion/styled'
 
-import Input from '../controls/Input'
 import Items from '../Items'
 import GlobalCss from './global-css'
 import ChecklistProvider from '../context/checklist'
