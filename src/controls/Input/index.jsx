@@ -12,13 +12,20 @@ const StyledInput = styled.input`
   border-radius: 4px;
   border: 0;
   outline: 1px solid rgba(255, 255, 255, 0.08);
+  transition: outline-color 100ms ease-in, background-color 100ms ease-in;
 
   &::placeholder {
     opacity: 0.4;
   }
 
+  &:hover {
+    outline: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+
   &:focus {
-    outline: 1px solid rgba(255, 255, 255, 0.3);
+    outline: 1px solid rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.04);
   }
 `
 

@@ -10,9 +10,10 @@ class ChecklistProvider extends Component {
     this.state = {
       id: '',
       title: '',
+      lastItemId: '0',
       items: [
         {
-          id: 0,
+          id: '0',
           label: '',
           checked: false
         }
@@ -24,11 +25,14 @@ class ChecklistProvider extends Component {
     }
 
     this.addItem = (callback) => {
+      const newItemId = parseInt(this.state.lastItemId + 1).toString()
+
       this.setState(
         {
+          lastItemId: newItemId,
           items: [
             ...this.state.items,
-            { id: this.state.items.length, label: '', checked: false }
+            { id: newItemId, label: '', checked: false }
           ]
         },
         callback
@@ -49,6 +53,26 @@ class ChecklistProvider extends Component {
         callback
       )
     }
+
+    this.removeItem = (item, callback) => {
+      this.setState(
+        { items: this.state.items.filter(({ id }) => id !== item.id) },
+        callback
+      )
+    }
+
+    this.reorderItems = (sourceIndex, destinationIndex, callback) => {
+      const reorderedItems = [...this.state.items]
+      const [removed] = reorderedItems.splice(sourceIndex, 1)
+      reorderedItems.splice(destinationIndex, 0, removed)
+
+      this.setState(
+        {
+          items: reorderedItems
+        },
+        callback
+      )
+    }
   }
 
   render() {
@@ -60,7 +84,9 @@ class ChecklistProvider extends Component {
           ...this.state,
           setTitle: this.setTitle,
           addItem: this.addItem,
-          updateItem: this.updateItem
+          updateItem: this.updateItem,
+          removeItem: this.removeItem,
+          reorderItems: this.reorderItems
         }}
       >
         {children}
