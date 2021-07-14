@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 
-import { useChecklist } from '../context/checklist'
+import { useChecklist } from '../business/ChecklistProvider'
 import Input from '../controls/Input'
 
 const StyledInput = styled(Input)`
@@ -11,7 +11,10 @@ const StyledInput = styled(Input)`
 `
 
 const TitleInput = ({ className }) => {
-  const { title, setTitle } = useChecklist()
+  const {
+    value: { title },
+    setTitle
+  } = useChecklist()
 
   return (
     <StyledInput

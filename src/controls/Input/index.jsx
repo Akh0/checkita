@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import styled from '@emotion/styled'
 
 const StyledInput = styled.input`
@@ -11,7 +10,7 @@ const StyledInput = styled.input`
   padding: 6px;
   border-radius: 4px;
   border: 0;
-  outline: 1px solid rgba(255, 255, 255, 0.08);
+  outline: 1px solid transparent;
   transition: outline-color 100ms ease-in, background-color 100ms ease-in;
 
   &::placeholder {

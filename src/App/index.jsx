@@ -3,8 +3,11 @@ import styled from '@emotion/styled'
 
 import Items from '../Items'
 import GlobalCss from './global-css'
-import ChecklistProvider from '../context/checklist'
+import ChecklistProvider, {
+  ChecklistConsumer
+} from '../business/ChecklistProvider'
 import TitleInput from '../TitleInput'
+import Loader from './Loader'
 
 const StyledTitleInput = styled(TitleInput)`
   display: block;
@@ -12,13 +15,23 @@ const StyledTitleInput = styled(TitleInput)`
 `
 
 const App = () => {
+  const { pathname } = window.location
+
   return (
-    <ChecklistProvider>
+    <ChecklistProvider checklistId={pathname.substring(1)}>
       <GlobalCss />
-      <header>
-        <StyledTitleInput placeholder="Titre de la checklist" />
-      </header>
-      <Items />
+      <ChecklistConsumer>
+        {({ loading }) =>
+          loading ? (
+            <Loader />
+          ) : (
+            <>
+              <StyledTitleInput placeholder="Titre de la checklist" />
+              <Items />
+            </>
+          )
+        }
+      </ChecklistConsumer>
     </ChecklistProvider>
   )
 }

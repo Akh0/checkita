@@ -98,7 +98,7 @@ const Item = ({
   className
 }) => (
   <Wrapper className={className}>
-    {dragHandleProps && <DragHandle {...dragHandleProps} />}
+    {dragHandleProps && <DragHandle {...dragHandleProps} tabIndex="-1" />}
     <Checkbox
       type="checkbox"
       checked={checked}
@@ -117,7 +117,7 @@ const Item = ({
       />
     </Label>
     {onRemove && (
-      <DeleteButton onClick={onRemove}>
+      <DeleteButton onClick={onRemove} tabIndex="-1">
         <DeleteImg src={svgTrash} />
       </DeleteButton>
     )}

@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import _ from 'lodash'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 
-import { useChecklist } from '../context/checklist'
+import { useChecklist } from '../business/ChecklistProvider'
 import Item from './Item'
 
 const DndList = styled.div`
@@ -17,14 +17,17 @@ const StyledItem = styled(Item)`
 `
 
 const Items = () => {
-  const { items, updateItem, addItem, removeItem, reorderItems } =
-    useChecklist()
+  const {
+    value: { items },
+    updateItem,
+    addItem,
+    removeItem,
+    reorderItems
+  } = useChecklist()
 
   return (
     <DragDropContext
       onDragEnd={({ source, destination }) => {
-        console.log('ON DRAG END', source, destination)
-
         reorderItems(source.index, destination.index)
       }}
     >
