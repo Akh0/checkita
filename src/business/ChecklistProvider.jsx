@@ -1,27 +1,33 @@
 import React, { Component, createContext, useContext } from 'react'
 import PropTypes from 'prop-types'
 import { syncList, getListRef } from './database'
-import { updateUrl } from './router'
+import { updateUrl, updateTitle } from './page'
 
 const ChecklistContext = createContext({})
+
+const defaultValue = {
+  id: null,
+  title: '',
+  lastItemId: '0',
+  items: [
+    {
+      id: '0',
+      label: '',
+      checked: false
+    }
+  ]
+}
 
 class ChecklistProvider extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
+      readOnly: false,
       loading: !!props.checklistId,
       value: {
         id: props.checklistId,
-        title: '',
-        lastItemId: '0',
-        items: [
-          {
-            id: '0',
-            label: '',
-            checked: false
-          }
-        ]
+        ...defaultValue
       }
     }
 
@@ -35,12 +41,47 @@ class ChecklistProvider extends Component {
       }
     }
 
+    this.setReadOnly = (readOnly) => {
+      this.setState({ readOnly })
+    }
+
     this.setList = (list) => {
-      this.setState({ loading: false, value: { ...list } })
+      this.setState({ loading: false, value: { ...list } }, () => {
+        updateTitle(this.state.value)
+      })
+    }
+
+    this.cloneList = () => {
+      const { id } = syncList({ ...this.state.value, id: null })
+
+      this.setState({ value: { ...this.state.value, id } }, () => {
+        updateUrl({ ...this.state.value })
+      })
+    }
+
+    this.removeList = () => {
+      getListRef(this.state.value.id)
+        .remove()
+        .then(() => {
+          this.setState(
+            {
+              value: {
+                ...defaultValue
+              }
+            },
+            () => {
+              updateUrl({ id: '/' })
+            }
+          )
+        })
+        .catch((error) => {
+          console.log('Remove failed: ' + error.message)
+        })
     }
 
     this.setTitle = (title) => {
       this.setState({ value: { ...this.state.value, title } }, () => {
+        updateTitle(this.state.value)
         sync()
       })
     }
@@ -141,7 +182,9 @@ class ChecklistProvider extends Component {
       listRef.on(
         'value',
         (snapshot) => {
-          this.setList(snapshot.val())
+          const value = snapshot.val()
+
+          value ? this.setList(value) : this.setState({ loading: false })
         },
         (errorObject) => {
           console.log('The read failed: ' + errorObject.name)
@@ -157,7 +200,10 @@ class ChecklistProvider extends Component {
       <ChecklistContext.Provider
         value={{
           ...this.state,
+          setReadOnly: this.setReadOnly,
           setList: this.setList,
+          cloneList: this.cloneList,
+          removeList: this.removeList,
           setTitle: this.setTitle,
           addItem: this.addItem,
           updateItem: this.updateItem,

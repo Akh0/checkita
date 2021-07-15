@@ -8,6 +8,7 @@ import ChecklistProvider, {
 } from '../business/ChecklistProvider'
 import TitleInput from '../TitleInput'
 import Loader from './Loader'
+import Actions from '../Actions'
 
 const StyledTitleInput = styled(TitleInput)`
   display: block;
@@ -21,11 +22,12 @@ const App = () => {
     <ChecklistProvider checklistId={pathname.substring(1)}>
       <GlobalCss />
       <ChecklistConsumer>
-        {({ loading }) =>
+        {({ loading, value }) =>
           loading ? (
             <Loader />
           ) : (
             <>
+              {value.id && <Actions />}
               <StyledTitleInput placeholder="Titre de la checklist" />
               <Items />
             </>

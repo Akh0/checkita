@@ -2,14 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import Input from '../../controls/Input'
-import svgTrash from './trash.svg'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { useChecklist } from '../../business/ChecklistProvider'
 
 const Wrapper = styled.div`
   display: flex;
 `
 
 const DragHandle = styled.div`
-  width: 46px;
+  width: 40px;
   font-size: 24px;
   line-height: 8px;
   letter-spacing: 2px;
@@ -73,19 +75,37 @@ const Label = styled.label`
   }
 `
 
+const InnerLabel = styled.span`
+  text-decoration: ${({ checked }) =>
+    checked ? 'line-through double' : 'none'};
+  font-size: 24px;
+  color: #ffffff;
+  padding: 6px;
+`
+
 const StyledInput = styled(Input)`
   font-size: 24px;
   margin-right: 10px;
+  text-decoration: ${({ checked }) =>
+    checked ? 'line-through double' : 'none'};
 `
 
 const DeleteButton = styled.button`
   background: none;
   border: 0;
   cursor: pointer;
+  color: #ffffff;
+  opacity: 0.4;
+  transition: opacity 100ms ease-in, transform 100ms linear;
+
+  &:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 `
 
-const DeleteImg = styled.img`
-  height: 70%;
+const TrashIcon = styled(FontAwesomeIcon)`
+  font-size: 18px;
 `
 
 const Item = ({
@@ -96,33 +116,48 @@ const Item = ({
   onChange,
   onRemove,
   className
-}) => (
-  <Wrapper className={className}>
-    {dragHandleProps && <DragHandle {...dragHandleProps} tabIndex="-1" />}
-    <Checkbox
-      type="checkbox"
-      checked={checked}
-      onChange={() => {
-        onChange(label, !checked)
-      }}
-      id={`item_${id}`}
-    />
-    <Label htmlFor={`item_${id}`}>
-      <StyledInput
-        placeholder="Libellé"
-        value={label}
-        onChange={(value) => {
-          onChange(value, checked)
+}) => {
+  const { readOnly } = useChecklist()
+
+  return (
+    <Wrapper className={className}>
+      {dragHandleProps && (
+        <DragHandle
+          {...dragHandleProps}
+          tabIndex="-1"
+          style={{ display: readOnly ? 'none' : 'block' }}
+        />
+      )}
+      <Checkbox
+        type="checkbox"
+        checked={checked}
+        onChange={() => {
+          onChange(label, !checked)
         }}
+        id={`item_${id}`}
       />
-    </Label>
-    {onRemove && (
-      <DeleteButton onClick={onRemove} tabIndex="-1">
-        <DeleteImg src={svgTrash} />
-      </DeleteButton>
-    )}
-  </Wrapper>
-)
+      <Label htmlFor={`item_${id}`}>
+        {readOnly ? (
+          <InnerLabel checked={checked}>{label}</InnerLabel>
+        ) : (
+          <StyledInput
+            checked={checked}
+            placeholder="Libellé"
+            value={label}
+            onChange={(value) => {
+              onChange(value, checked)
+            }}
+          />
+        )}
+      </Label>
+      {onRemove && !readOnly && (
+        <DeleteButton onClick={onRemove} tabIndex="-1" title="Supprimer">
+          <TrashIcon icon={faTrashAlt} />
+        </DeleteButton>
+      )}
+    </Wrapper>
+  )
+}
 
 Item.propTypes = {
   dragHandleProps: PropTypes.shape({}),
