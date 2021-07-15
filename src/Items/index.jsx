@@ -7,13 +7,20 @@ import { useChecklist } from '../business/ChecklistProvider'
 import Item from './Item'
 
 const DndList = styled.div`
-  padding: 10px;
   background-color: ${({ isDraggingOver }) =>
     isDraggingOver ? 'rgba(255, 255, 255, 0.1)' : undefined};
 `
 
 const StyledItem = styled(Item)`
   margin-bottom: 20px;
+
+  @media screen and (max-width: 640px) {
+    margin-bottom: 16px;
+  }
+
+  @media screen and (max-width: 480px) {
+    margin-bottom: 12px;
+  }
 `
 
 const Items = () => {

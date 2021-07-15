@@ -6,8 +6,18 @@ import { useChecklist } from '../business/ChecklistProvider'
 import Input from '../controls/Input'
 
 const StyledInput = styled(Input)`
-  font-size: 36px;
-  text-align: center;
+  > input {
+    font-size: 38px;
+    text-align: center;
+
+    @media screen and (max-width: 640px) {
+      font-size: 34px;
+    }
+
+    @media screen and (max-width: 480px) {
+      font-size: 30px;
+    }
+  }
 `
 
 const TitleInput = ({ className }) => {

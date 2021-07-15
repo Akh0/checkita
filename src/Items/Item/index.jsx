@@ -11,6 +11,7 @@ const Wrapper = styled.div`
 `
 
 const DragHandle = styled.div`
+  flex-shrink: 0;
   width: 40px;
   font-size: 24px;
   line-height: 8px;
@@ -20,6 +21,12 @@ const DragHandle = styled.div`
 
   &::after {
     content: '.. .. .. ..';
+  }
+
+  @media screen and (max-width: 480px) {
+    width: 30px;
+    font-size: 20px;
+    line-height: 7px;
   }
 `
 
@@ -40,6 +47,12 @@ const Checkbox = styled.input`
     border-width: 0 3px 3px 0;
     border-color: #fff;
     transform: rotate(45deg);
+
+    @media screen and (max-width: 480px) {
+      left: 11px;
+      width: 10px;
+      height: 22px;
+    }
   }
 `
 
@@ -72,6 +85,11 @@ const Label = styled.label`
     margin-right: 10px;
     border-radius: 4px;
     transition: background-color 100ms ease-in;
+
+    @media screen and (max-width: 480px) {
+      padding: 15px;
+      margin-right: 6px;
+    }
   }
 `
 
@@ -84,10 +102,24 @@ const InnerLabel = styled.span`
 `
 
 const StyledInput = styled(Input)`
-  font-size: 24px;
-  margin-right: 10px;
-  text-decoration: ${({ checked }) =>
-    checked ? 'line-through double' : 'none'};
+  > input {
+    min-width: 340px;
+    font-size: 24px;
+    margin-right: 10px;
+    text-decoration: ${({ checked }) =>
+      checked ? 'line-through double' : 'none'};
+
+    @media screen and (max-width: 640px) {
+      min-width: 260px;
+      font-size: 22px;
+    }
+
+    @media screen and (max-width: 480px) {
+      min-width: 175px;
+      font-size: 20px;
+      margin-right: 4px;
+    }
+  }
 `
 
 const DeleteButton = styled.button`
@@ -106,6 +138,10 @@ const DeleteButton = styled.button`
 
 const TrashIcon = styled(FontAwesomeIcon)`
   font-size: 18px;
+
+  @media screen and (max-width: 480px) {
+    font-size: 16px;
+  }
 `
 
 const Item = ({

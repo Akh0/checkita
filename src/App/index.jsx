@@ -11,8 +11,19 @@ import Loader from './Loader'
 import Actions from '../Actions'
 
 const StyledTitleInput = styled(TitleInput)`
-  display: block;
-  margin: 50px auto 100px auto;
+  display: block !important;
+  text-align: center;
+  margin: 120px auto 60px auto;
+
+  @media screen and (max-width: 640px) {
+    margin-top: 115px;
+    margin-bottom: 40px;
+  }
+
+  @media screen and (max-width: 480px) {
+    margin-top: 90px;
+    margin-bottom: 30px;
+  }
 `
 
 const App = () => {

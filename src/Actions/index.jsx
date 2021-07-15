@@ -14,14 +14,25 @@ import {
 import { useChecklist } from '../business/ChecklistProvider'
 
 const Wrapper = styled.div`
-  /* color: white; */
-  top: 30px;
   position: absolute;
-  right: 40px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.06);
   top: 50px;
   right: 50px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.06);
+
+  @media screen and (max-width: 640px) {
+    top: 40px;
+    right: 40px;
+  }
+
+  @media screen and (max-width: 480px) {
+    top: 20px;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 14px;
+    width: calc(100% - 40px);
+    text-align: center;
+  }
 `
 
 const Button = styled.button`
@@ -38,18 +49,20 @@ const Button = styled.button`
   &:hover {
     opacity: 1;
     transform: scale(1.2);
-
-    /* Trash button */
-    &:last-child {
-      margin-right: 0;
-      margin-left: 10px;
-    }
   }
 
   /* Trash button */
   &:last-child {
     margin-right: 0;
     margin-left: 10px;
+  }
+
+  @media screen and (max-width: 640px) {
+  }
+
+  @media screen and (max-width: 480px) {
+    font-size: 22px;
+    margin-right: 14px;
   }
 `
 
